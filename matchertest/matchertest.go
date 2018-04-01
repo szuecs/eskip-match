@@ -3,7 +3,6 @@ package matchertest
 import (
 	ioutil "io/ioutil"
 	"path/filepath"
-	"testing"
 
 	"github.com/rbarilani/eskip-match/matcher"
 	"gopkg.in/yaml.v2"
@@ -37,11 +36,15 @@ func (s *Scenarios) FromYAMLFile(file string) (*Scenarios, error) {
 	return s, nil
 }
 
-func Run(t *testing.T, file string) {
+type T interface {
+	Fatal(...interface{})
+	Errorf(format string, args ...interface{})
+}
+
+func Run(t T, file string) {
 	path, _ := filepath.Abs(file)
 	path = filepath.Dir(path)
 	scenarios := &Scenarios{}
-	t.Log(path)
 	scenarios, err := scenarios.FromYAMLFile(file)
 	if err != nil {
 		t.Fatal(err)

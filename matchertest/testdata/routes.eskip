@@ -1,1 +1,2 @@
 bar: Path("/bar") -> <shunt>;
+foo: Path("/foo") -> <shunt>;
