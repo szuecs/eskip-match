@@ -1,0 +1,11 @@
+scenarios:
+  - file: routes.eskip
+    tests:
+      - route_id: bar
+        attributes:
+          - method: post
+            path: /bar
+      -
+        no_match: true
+        attributes:
+          - path: /no-match    
