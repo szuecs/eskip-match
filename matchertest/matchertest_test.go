@@ -3,5 +3,5 @@ package matchertest
 import "testing"
 
 func TestRun(t *testing.T) {
-	Run(t, "testdata/scenarios.yml")
+	Run(t, "testdata/scenario.yml")
 }

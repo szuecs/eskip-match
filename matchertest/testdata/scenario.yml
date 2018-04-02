@@ -1,0 +1,13 @@
+coverage: 100
+file: routes.eskip
+tests:
+  - route_id: foo
+    attributes:
+      - path: /foo
+  - route_id: bar
+    attributes:
+      - method: post
+        path: /bar
+  - no_match: true
+    attributes:
+      - path: /no-match    

@@ -28,6 +28,8 @@ import (
 type Matcher interface {
 	// Given request attributes test if a route matches
 	Test(attributes *RequestAttributes) TestResult
+
+	Routes() []*eskip.Route
 }
 
 // TestResult result of a Matcher.Test operation
@@ -53,6 +55,7 @@ type RequestAttributes struct {
 
 type matcher struct {
 	routing *routing.Routing
+	routes  []*eskip.Route
 }
 
 type testResult struct {
@@ -140,10 +143,20 @@ func New(o *Options) (Matcher, error) {
 		return nil, err
 	}
 
+	routes := []*eskip.Route{}
+	for _, client := range dataClients {
+		rs, err := client.LoadAll()
+		if err != nil {
+			return nil, err
+		}
+		routes = append(routes, rs...)
+	}
+
 	routing := createRouting(dataClients, o)
 
 	return &matcher{
 		routing,
+		routes,
 	}, nil
 }
 
@@ -176,6 +189,10 @@ func (f *matcher) Test(attributes *RequestAttributes) TestResult {
 
 	// transform literal to pointer to use eskip.Route methods
 	return result
+}
+
+func (f *matcher) Routes() []*eskip.Route {
+	return f.routes
 }
 
 func createHTTPRequest(attributes *RequestAttributes) (*http.Request, error) {
